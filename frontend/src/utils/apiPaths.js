@@ -19,13 +19,13 @@ export const API_PATHS = {
     GET_USER_DASHBOARD_DATA: "/api/tasks/userdashboard", ///user side data
     GET_ALL_TASKS: "/api/tasks", //get all tasks  (admin will get all , user only get assigned task)
 
-    GET_TASK_BY_ID: (taskID) => "/api/tasks/:taskID", //both  side
+    GET_TASK_BY_ID: (taskID) => `/api/tasks/${taskID}`,
     CREATE_TASK: "/api/tasks", //admiin only
-    UPDATE_TASK: (taskId) => "/api/tasks/:taskId", //admin and user
-    DELETE_TASK: (taskId) => "/api/tasks/:taskId", //admin only can delete task
+    UPDATE_TASK: (taskId) => `/api/tasks/${taskId}`, //admin and user
+    DELETE_TASK: (taskId) => `/api/tasks/${taskId}`, //admin only can delete task
 
-    UPDATE_TASK_STATUS: (taskid) => "/api/tasks/:taskid/status",
-    UPDATE_TODO_CHECKLIST: (taskid) => "/api/tasks/:taskid/checklist",
+    UPDATE_TASK_STATUS: (taskid) => `/api/tasks/${taskid}/status`,
+    UPDATE_TODO_CHECKLIST: (taskid) => `/api/tasks/${taskid}/checklist`,
   },
   REPORT: {
     EXPORT_TASKS: "/api/reports/export/tasks", //adminonly

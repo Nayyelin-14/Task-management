@@ -95,14 +95,20 @@ const ManageTask = () => {
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-col-3 my-5">
-          {allTask?.map((item, index) => (
-            <TaskCard
-              key={index}
-              item={item}
-              onClick={() => handleClick(item)}
-            />
-          ))}
+        {allTask.length === 0 && (
+          <div className="text-2xl text-red-500 flex items-center justify-center h-full mt-20">
+            No tasks found!!!
+          </div>
+        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-5">
+          {allTask.length > 0 &&
+            allTask?.map((item, index) => (
+              <TaskCard
+                key={index}
+                item={item}
+                onClick={() => handleClick(item)}
+              />
+            ))}
         </div>
       </div>
     </DashboardLayout>

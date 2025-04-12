@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import { LuTrash2 } from "react-icons/lu";
 import moment from "moment";
@@ -11,8 +11,11 @@ import AddAttachments from "../../components/Inputs/AddAttachments";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { toast } from "react-toastify";
+import UserModel from "../../components/UserModel";
+import ConfirmModel from "../../components/ConfirmModel";
 const CreateTask = () => {
   const location = useLocation();
+
   const { taskId } = location.state || {};
   const navigate = useNavigate();
   const [taskData, setTaskData] = useState({
@@ -45,8 +48,20 @@ const CreateTask = () => {
       todoChecklists: [],
     });
   };
-  const removeTask = () => {};
-  const updateTask = () => {};
+  const removeTask = async () => {
+    setLoading(true);
+    try {
+      setOpenDeleteAlert(false);
+      await axiosInstance.delete(API_PATHS.TASKS.DELETE_TASK(taskId));
+      toast.info("Selected task wes deleted");
+      navigate("/admin/tasks");
+    } catch (error) {
+      toast.error("Something went wrong went deleting");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const createTask = async () => {
     try {
       const setEachTodolist = taskData.todoChecklists?.map((checklist) => ({
@@ -59,7 +74,6 @@ const CreateTask = () => {
         todoChecklist: setEachTodolist,
         dueDate: new Date(taskData.dueDate).toISOString(),
       });
-      console.log(response);
       if (response.status === 200) {
         toast.success(response.data.message);
       }
@@ -68,6 +82,38 @@ const CreateTask = () => {
       toast.error(error?.response?.data?.error || "Something went wrong");
     }
   };
+
+  const updateTask = async () => {
+    setLoading(true);
+    try {
+      const todoList = taskData.todoChecklists?.map((item) => {
+        console.log(item);
+        const prevTodo = currentTask?.todoChecklist || [];
+        const matchedTodo = prevTodo.find((todo) => todo.text == item);
+        return {
+          text: item,
+          completed: matchedTodo ? matchedTodo.completed : false,
+        };
+      });
+
+      const response = await axiosInstance.put(
+        API_PATHS.TASKS.UPDATE_TASK(taskId),
+        {
+          ...taskData,
+          dueDate: new Date(taskData.dueDate).toISOString(),
+
+          todoChecklist: todoList,
+        }
+      );
+      console.log(response);
+      toast.success("task Updated");
+    } catch (error) {
+      toast.error("Something went wrong in updating task data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = () => {
     if (!taskData.title.trim()) {
       setError("Title is required");
@@ -102,8 +148,43 @@ const CreateTask = () => {
       createTask();
     }
   };
-  const getTaskDetailsById = () => {};
+  const getTaskDetailsById = async () => {
+    if (taskId) {
+      try {
+        const response = await axiosInstance.get(
+          API_PATHS.TASKS.GET_TASK_BY_ID(taskId)
+        );
+        if (response.status === 200) {
+          const oldtaskInfo = response.data;
 
+          setCurrentTask(oldtaskInfo);
+          //setCurrentTask(oldtaskInfo) does not immediately update currentTask.// React state updates are asynchronous — currentTask won’t have the new value until the next render. So right after calling setCurrentTask(oldtaskInfo), currentTask is still the previous value (likely null at that point).
+
+          setTaskData((prev) => ({
+            title: oldtaskInfo.title,
+            description: oldtaskInfo.description,
+            attachments: oldtaskInfo.attachments || [],
+            assignedTo: oldtaskInfo.assignedTo || [],
+            priority: oldtaskInfo.priority || "Low",
+            dueDate: oldtaskInfo.dueDate
+              ? moment(oldtaskInfo.dueDate).format("YYYY-MM-DD")
+              : null,
+            assignedTo: oldtaskInfo?.assignedTo.map((user) => user._id),
+            todoChecklists:
+              oldtaskInfo.todoChecklist?.map((item) => item.text) || [],
+          }));
+        }
+      } catch (error) {
+        toast.error("Something went wrong");
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (taskId) {
+      getTaskDetailsById();
+    }
+  }, [taskId]);
   return (
     <DashboardLayout activeMenu="Create Task">
       <section className="my-5">
@@ -113,7 +194,7 @@ const CreateTask = () => {
             <div className="flex items-center justify-between">
               <p>{taskId ? "Update Task Data" : "Create new Task"}</p>
 
-              {!taskId && (
+              {taskId && (
                 <button
                   onClick={() => setOpenDeleteAlert(true)}
                   className="delete-btn"
@@ -227,6 +308,17 @@ const CreateTask = () => {
           {/* //form */}
         </div>
       </section>
+
+      <UserModel
+        isOpen={openDeleteAlert}
+        onClose={() => setOpenDeleteAlert(false)}
+        title="Delete task"
+      >
+        <ConfirmModel
+          content="Are you sure to delete this task and this task wiill be removed permanently."
+          onConfirmDelete={() => removeTask()}
+        />
+      </UserModel>
     </DashboardLayout>
   );
 };

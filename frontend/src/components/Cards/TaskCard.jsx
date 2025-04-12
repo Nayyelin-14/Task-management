@@ -4,7 +4,6 @@ import AvatarGroup from "../AvatarGroup";
 import { LuPaperclip } from "react-icons/lu";
 import moment from "moment";
 const TaskCard = ({ item, onClick }) => {
-  console.log(item);
   const attachmentsCount = item.attachments?.length || 0;
   const createdAt = item.createdAt;
   const description = item.description;

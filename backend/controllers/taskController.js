@@ -104,6 +104,7 @@ const updateTaskdetails = async (req, res) => {
   if (!taskId) {
     throw new Error("Task id is required");
   }
+
   try {
     const task = await Task.findById(taskId);
     if (!task) {
@@ -138,6 +139,7 @@ const updateTaskdetails = async (req, res) => {
 //
 const getTaskByID = async (req, res) => {
   const { taskID } = req.params;
+
   if (!taskID) {
     throw new Error("Task id is required");
   }
