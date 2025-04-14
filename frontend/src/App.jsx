@@ -21,9 +21,9 @@ import UserProvider, { UserContext } from "./context/userContext";
 import ProtectedRoute from "./utils/protectedRoute";
 const App = () => {
   return (
-    <UserProvider>
-      <div>
-        <BrowserRouter>
+    <div>
+      <BrowserRouter>
+        <UserProvider>
           <Routes>
             <Route
               path="/login"
@@ -49,7 +49,7 @@ const App = () => {
               <Route path="/admin/users" element={<ManageUser />} />
             </Route>
 
-            <Route element={<PrivateRoutes allowedRoles={["user"]} />}>
+            <Route element={<PrivateRoutes allowedRoles={["member"]} />}>
               <Route path="/user/dashboard" element={<UserDashboard />} />
               <Route path="/user/user-tasks" element={<MyTasks />} />
               <Route
@@ -59,9 +59,9 @@ const App = () => {
             </Route>
             <Route path="/" element={<Root />} />
           </Routes>
-        </BrowserRouter>
-      </div>
-    </UserProvider>
+        </UserProvider>
+      </BrowserRouter>
+    </div>
   );
 };
 
@@ -70,10 +70,12 @@ export default App;
 const Root = () => {
   const { loading, user } = useContext(UserContext);
   if (loading) return <Outlet />; // Show nested routes while loading
-
-  if (!user) {
+  console.log(user);
+  const hasToken = localStorage.getItem("token");
+  if (!user && !hasToken) {
     return <Navigate to="/login" />;
   }
+
   return user.role === "admin" ? (
     <Navigate to="/admin/dashboard" />
   ) : (

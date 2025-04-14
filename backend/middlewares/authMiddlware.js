@@ -9,6 +9,10 @@ const protect = async (req, res, next) => {
       token = token.split(" ")[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       req.user = await User.findById(decoded.id).select("-password");
+
+      if (!req.user) {
+        return res.status(401).json({ message: "User not found" });
+      }
       next();
     } else {
       res.status(400).json({ message: "Not authorized, no token" });
@@ -21,6 +25,16 @@ const protect = async (req, res, next) => {
   }
 };
 
+const allowRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      return res.status(403).json({ message: "Unauthorized role access" });
+    }
+    console.log("sdfasdfid", req.user._id);
+    next();
+  };
+};
+
 const adminOnly = async (req, res, next) => {
   if (req.user && req.user.role === "admin") {
     next();
@@ -31,4 +45,4 @@ const adminOnly = async (req, res, next) => {
   }
 };
 
-module.exports = { protect, adminOnly };
+module.exports = { protect, adminOnly, allowRoles };

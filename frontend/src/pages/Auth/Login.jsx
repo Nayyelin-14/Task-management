@@ -12,7 +12,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-
+  const user_roles = ["member", "admin"];
   const { updateUser } = useContext(UserContext);
 
   const navigate = useNavigate();
@@ -38,6 +38,7 @@ const Login = () => {
         email,
         password,
       });
+
       const { token, role } = response.data;
 
       if (token) {
@@ -49,7 +50,9 @@ const Login = () => {
           navigate("/user/dashboard");
         }
       }
-      toast.success("LogIn successful");
+      if (role.includes(user_roles)) {
+        toast.success("LogIn successful");
+      }
     } catch (err) {
       if (err.response && err.response.data.message) {
         setError(err.response.data.message);

@@ -5,7 +5,7 @@ const {
   updateUserprofile,
   getUserProfile,
 } = require("../controllers/authController");
-const { protect } = require("../middlewares/authMiddlware");
+const { protect, allowRoles } = require("../middlewares/authMiddlware");
 const upload = require("../middlewares/uploadMiddleware");
 const router = express.Router();
 
@@ -13,9 +13,14 @@ router.post("/register", registerUser);
 
 router.post("/login", loginUser);
 
-router.put("/user-profile", protect, updateUserprofile);
+router.put("/user-profile", protect, allowRoles("member"), updateUserprofile);
 
-router.get("/user-profile", protect, getUserProfile);
+router.get(
+  "/user-profile",
+  protect,
+  allowRoles("member", "admin"),
+  getUserProfile
+);
 
 router.post("/upload-image", upload.single("image"), (req, res) => {
   if (!req.file) {

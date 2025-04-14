@@ -22,15 +22,36 @@ const ManageUser = () => {
     }
   };
 
+  const HandleDownload = async () => {
+    try {
+      const response = await axiosInstance.get(API_PATHS.REPORT.EXPORT_USERS, {
+        responseType: "blob", //blob stands for Binary Large Object. used for images, audio, video, or in this case, Excel files.
+      });
+      // console.log(response);
+
+      const url = window.URL.createObjectURL(new Blob([response.data])); ////Converts the binary data (Blob) into a temporary URL that the browser can use to download.new Blob([response.data]): wraps the raw response data into a Blob object.
+      // console.log(url);
+      const link = document.createElement("a"); ///Creates an invisible <a> tag.
+      link.href = url; //Sets href to the blob URL.
+      link.setAttribute("download", "user_details.xlsx"); //Adds a download attribute with the desired filename. <a download="user_details.xlsx" href="url">Download</a> // element.setAttribute(attributeName, value);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link); ///Removes the temporary <a> element from the DOM.
+      window.URL.revokeObjectURL(url); //Releases the blob URL from memory (important for performance).
+    } catch (error) {
+      toast.error("Error downloading  report");
+    }
+  };
+
   useEffect(() => {
     getallusers();
   }, []);
   return (
     <DashboardLayout activeMenu="Team Members">
       <div className="my-8">
-        <div className="flex items-center justify-between ">
+        <div className="flex items-center justify-between  mb-7">
           <h2 className="text-xl font-medium text-gray-600 ">Team Members</h2>
-          <button className="flex downloadBtn">
+          <button className="flex downloadBtn" onClick={() => HandleDownload()}>
             <LuFileSpreadsheet /> Download Users
           </button>
         </div>

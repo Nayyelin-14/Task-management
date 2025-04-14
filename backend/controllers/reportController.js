@@ -140,8 +140,9 @@ const exportUsersReport = async (req, res) => {
         });
       }
     });
-    const workbook = new execelJS.Workbook();
-    const workSheet = workbook.addWorksheet("Users Report");
+    const workbook = new execelJS.Workbook(); //creates a new Excel workbook using the exceljs library.
+    const workSheet = workbook.addWorksheet("Users Report"); //Adds a new worksheet (a tab in Excel) named "Users Report" to the workbook.
+    // This is where all the data will go—like rows and columns you see in an Excel table.
 
     workSheet.columns = [
       {
@@ -180,18 +181,23 @@ const exportUsersReport = async (req, res) => {
     }); ////Convert userTaskMap (which is an object) into an array of values and loop through each user.
     //////What Object.values(userTaskMap) does:It returns an array of values:Each user’s task data is added as a row in the Excel sheet.
     res.setHeader(
-      "Content-Type",
+      "Content-Type", //: What kind of file this is (in this case, an Excel .xlsx file).
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" /////MIME Type
     );
 
     res.setHeader(
       "Content-Disposition",
-      'attachment; filename="tasks_report.xlsx"'
+      'attachment; filename="tasks_report.xlsx"' //That this is a file that should be downloaded instead of opened in the browser, and the filename should be "tasks_report.xlsx".
     );
 
-    return workbook.xlsx.write(res).then(() => {
-      res.end();
-    });
+    return (
+      workbook.xlsx
+        .write(res) ////writes the Excel workbook to the HTTP response stream (res).
+        // It basically says: "Take the in-memory Excel file we built and stream it directly to the user as a downloadable file."
+        .then(() => {
+          res.end();
+        })
+    );
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong",

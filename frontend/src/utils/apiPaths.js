@@ -16,7 +16,7 @@ export const API_PATHS = {
   },
   TASKS: {
     GET_DASHBOARD_DATA: "/api/tasks/dashboard-data", ///admin only
-    GET_USER_DASHBOARD_DATA: "/api/tasks/userdashboard", ///user side data
+    GET_USER_DASHBOARD_DATA: "/api/tasks/user-data-dashboard", ///user side data
     GET_ALL_TASKS: "/api/tasks", //get all tasks  (admin will get all , user only get assigned task)
 
     GET_TASK_BY_ID: (taskID) => `/api/tasks/${taskID}`,

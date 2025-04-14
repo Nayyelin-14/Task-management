@@ -2,7 +2,6 @@ import React from "react";
 import usericon from "./usericon.jpg";
 
 const UserCard = ({ userInfo }) => {
-  console.log(userInfo?.InProgressTasks);
   return (
     <div className="user-card p-2">
       <div className="flex   flex-col">
@@ -49,19 +48,20 @@ const StatCards = ({ label, count, status }) => {
   const getstatusTagColor = () => {
     switch (status) {
       case "In Progress":
-        return "text-yellow-400/90   bg-yellow-200/30 border border-yellow-300/50";
+        return "text-yellow-400/90   bg-yellow-100/30 border-l-4 border-yellow-300/50";
       case "Pending":
-        return "text-purple-400/90   bg-purple-200/30 border border-purple-300/50";
+        return "text-purple-400/90   bg-purple-100/30 border-l-4 border-purple-300/50";
       case "Completed":
-        return "text-green-400/90   bg-green-200/30 border border-green-300/50";
+        return "text-green-400/90 bg-green-100/30 border-l-4 border-l-green-300/50";
+
       default:
-        return "text-gray-400/90   bg-gray-200/30 border border-gray-300/50";
+        return "text-gray-400/90   bg-gray-100/30 border-l-4 border-gray-300/50";
     }
   };
 
   return (
     <div
-      className={`flex-1 items-center gap-3  text-sm font-medium ${getstatusTagColor()} px-4 py-0.5 rounded-lg`}
+      className={`flex-1 items-center gap-3  text-sm font-medium ${getstatusTagColor()} px-4 py-0.5 `}
     >
       <span>{count} </span> <br /> {label}
     </div>

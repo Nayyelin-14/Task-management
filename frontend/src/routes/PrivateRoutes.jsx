@@ -3,13 +3,17 @@ import { Navigate, Outlet } from "react-router-dom";
 import { UserContext } from "../context/userContext";
 
 const PrivateRoutes = ({ allowedRoles }) => {
-  const { user, loading } = useContext(UserContext);
+  const { user, loading, clearUser } = useContext(UserContext);
 
   if (loading) return null; // or a spinner
 
   if (!user) return <Navigate to="/login" />;
 
-  if (!allowedRoles.includes(user.role)) return <Navigate to="/" />;
+  if (!allowedRoles.includes(user.role)) {
+    clearUser();
+
+    return <Navigate to="/" />;
+  }
 
   return <Outlet />;
 };

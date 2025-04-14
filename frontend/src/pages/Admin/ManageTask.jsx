@@ -52,7 +52,28 @@ const ManageTask = () => {
     navigate(`/admin/create-task`, { state: { taskId: taskData._id } }); //pass data to the new route (/admin/create-task) without it appearing in the URL itself.const location = useLocation();s // cosnst taskId = location.state?.taskId; // Access the taskId from the state//
   };
 
-  const downloadReport = () => {};
+  const downloadReport = async () => {
+    try {
+      const response = await axiosInstance.get(API_PATHS.REPORT.EXPORT_TASKS, {
+        responseType: "blob",
+      });
+      if (response.status === 200) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "task_details.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      } else {
+        toast.error("Error downloading report");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error downloading report");
+    }
+  };
 
   useEffect(() => {
     getAlltasks();
@@ -74,7 +95,10 @@ const ManageTask = () => {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between">
           <div className="flex items-center justify-between mb-4 lg:mb-0">
             <h2 className="text-xl font-medium">Manage Tasks</h2>
-            <button className="flex  lg:hidden downloadBtn ">
+            <button
+              className="flex  lg:hidden downloadBtn"
+              onClick={() => downloadReport()}
+            >
               <LuFileSpreadsheet className="text-lg" />
               Download report
             </button>
@@ -87,7 +111,10 @@ const ManageTask = () => {
                 activeTab={filterKey}
                 setActiveTab={setFilterKey}
               />
-              <button className="lg:flex  hidden downloadBtn ">
+              <button
+                className="lg:flex  hidden downloadBtn"
+                onClick={() => downloadReport()}
+              >
                 <LuFileSpreadsheet className="text-lg" />
                 Download report
               </button>
