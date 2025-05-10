@@ -14,7 +14,10 @@ const TaskCard = ({ item, onClick }) => {
   const status = item.status;
   const title = item.title;
   const todoChecklist = item.todoChecklist?.length || 0;
-
+  const completedTCheckList = item.todoChecklist.filter(
+    (item) => item.completed
+  );
+  const completedCount = completedTCheckList.length;
   const getstatusTagColor = () => {
     switch (status) {
       case "In Progress":
@@ -38,7 +41,7 @@ const TaskCard = ({ item, onClick }) => {
         return "text-rose-500 bg-rose-50 border border-rose-500/60";
     }
   };
-
+  console.log(completedCount);
   return (
     <div
       className="bg-white rounded-xl py-4 shadow-md shadow-gray-200 border border-gray-200 cursor-pointer"
@@ -72,7 +75,7 @@ const TaskCard = ({ item, onClick }) => {
           {description}
         </p>
         <p className="text-[14px] text-gray-500 font-medium mt-2 mb-2 leading-[18px]">
-          Task Done : <span>{}</span>
+          Task Done : <span>{` ${completedCount} / ${todoChecklist}`}</span>
         </p>
         <Progress status={status} progress={progress} />
       </div>

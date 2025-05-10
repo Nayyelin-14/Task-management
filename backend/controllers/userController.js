@@ -27,7 +27,7 @@ const getUsers = async (req, res) => {
           status: "Completed",
         });
         // _doc removes Mongoose-specific functions and returns only the actual data from the database.
-
+        //lean() or _doc ka mongoose methods twy 3 loh  m ya tok pl plain json object twy pyn pyyy tr
         // It is just a normal JavaScript object, making it easier to manipulate or return as JSON.
         return {
           ...user._doc, // Spread the raw user data

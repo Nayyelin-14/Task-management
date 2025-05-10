@@ -57,6 +57,7 @@ const ManageTask = () => {
       const response = await axiosInstance.get(API_PATHS.REPORT.EXPORT_TASKS, {
         responseType: "blob",
       });
+      3;
       if (response.status === 200) {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement("a");
@@ -80,17 +81,17 @@ const ManageTask = () => {
     return () => {};
   }, [filterKey]);
 
-  // if (loading) {
-  //   return (
-  //     <DashboardLayout>
-  //       <div className="text-3xl h-screen flex items-center justify-center">
-  //         Loading data
-  //       </div>
-  //     </DashboardLayout>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="text-3xl h-screen flex items-center justify-center">
+          Loading data
+        </div>
+      </DashboardLayout>
+    );
+  }
   return (
-    <DashboardLayout>
+    <DashboardLayout activeMenu={"Manage Tasks"}>
       <div className="my-2">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between">
           <div className="flex items-center justify-between mb-4 lg:mb-0">

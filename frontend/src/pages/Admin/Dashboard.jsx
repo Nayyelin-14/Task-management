@@ -139,8 +139,8 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-10 items-center my-10 ">
-        <div className="w-full sm:w-[50%]">
+      <div className="flex flex-col md:flex-row gap-10 items-center my-10 ">
+        <div className="w-full md:w-[50%]">
           <div className="card">
             <div className="flex items-center justify-between">
               <h5 className="font-medium">Task Distribution</h5>
@@ -153,7 +153,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="w-full sm:w-[50%]">
+        <div className="w-full md:w-[50%]">
           <div className="card">
             <div className="flex items-center justify-between">
               <h5 className="font-medium">Task Distribution</h5>

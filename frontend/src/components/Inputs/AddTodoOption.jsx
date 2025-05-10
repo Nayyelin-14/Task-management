@@ -17,10 +17,7 @@ const AddTodoOption = ({ setTodoList, todoList }) => {
   };
 
   return (
-    <div
-      className="mt-3
-    "
-    >
+    <div className="mt-3">
       {todoList &&
         todoList.map((item, index) => (
           <div className="flex items-center justify-between border border-gray-100  bg-blue-100/30 rounded-lg px-4 py-3 my-2 w-full md:w-[70%]">

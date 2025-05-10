@@ -33,6 +33,13 @@ router.get(
 
 //for all and ///member
 router.get("/", protect, allowRoles("member", "admin"), getTasks); //get all tasks  (admin will get all , user only get assigned task)
+
+router.get(
+  "/user-data-dashboard",
+  protect,
+  allowRoles("member"),
+  userDashboardData
+);
 router.get("/:taskID", protect, allowRoles("member", "admin"), getTaskByID); ////get task by id //login to wiin ya ml , user ll ya admiin ll ya
 router.put(
   "/:taskId",
@@ -40,12 +47,6 @@ router.put(
   allowRoles("member", "admin"),
   updateTaskdetails
 ); ///update task detail
-router.get(
-  "/user-data-dashboard",
-  protect,
-  allowRoles("member"),
-  userDashboardData
-);
 
 router.put("/:taskid/status", protect, allowRoles("member"), updateTaskStatus); // update task status by user
 router.put(

@@ -164,7 +164,7 @@ const CreateTask = () => {
             title: oldtaskInfo.title,
             description: oldtaskInfo.description,
             attachments: oldtaskInfo.attachments || [],
-            assignedTo: oldtaskInfo.assignedTo || [],
+
             priority: oldtaskInfo.priority || "Low",
             dueDate: oldtaskInfo.dueDate
               ? moment(oldtaskInfo.dueDate).format("YYYY-MM-DD")

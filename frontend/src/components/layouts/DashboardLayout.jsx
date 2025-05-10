@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { act, useContext } from "react";
 import Navbar from "./navigation/Navbar";
 import SideMenu from "./navigation/SideMenu";
 import { UserContext } from "../../context/userContext";
@@ -12,7 +12,7 @@ const DashboardLayout = ({ children, activeMenu }) => {
       {user && (
         <div className="flex">
           <div className="max-[1080px]:hidden">
-            <SideMenu />
+            <SideMenu activeMenu={activeMenu} />
           </div>
           <div className="grow mx-5">{children}</div>
         </div>
