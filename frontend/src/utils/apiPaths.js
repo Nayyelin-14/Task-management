@@ -1,4 +1,3 @@
-export const BASE_URL = "http://localhost:5100";
 export const API_PATHS = {
   AUTH: {
     REGISTER: "/api/auth/register", //(both admin and member can)
