@@ -91,30 +91,32 @@ const ManageTask = () => {
     );
   }
   return (
-    <DashboardLayout activeMenu={"Manage Tasks"}>
-      <div className="my-2 w-full px-4 md:px-0 md:w-full mx-auto">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between">
-          <div className="flex items-center justify-between mb-4 lg:mb-0">
-            <h2 className="text-xl font-medium">Manage Tasks</h2>
+    <DashboardLayout activeMenu="Manage Tasks">
+      <div className="my-2 w-full px-3 md:px-0 mx-auto overflow-x-hidden">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+          {/* Title + Mobile Download */}
+          <div className="flex items-center justify-between mb-2 lg:mb-0 w-full">
+            <h2 className="text-lg font-medium truncate">Manage Tasks</h2>
             <button
-              className="flex  lg:hidden downloadBtn"
-              onClick={() => downloadReport()}
+              className="flex lg:hidden downloadBtn whitespace-nowrap"
+              onClick={downloadReport}
             >
               <LuFileSpreadsheet className="text-lg" />
-              Download report
+              <span className="hidden sm:inline">Download</span>
             </button>
           </div>
 
-          {tabs?.[0]?.count > 0 && ( //all task mhr count ka 0 htk po mha
-            <div className="flex items-center gap-4">
+          {/* Tabs + Desktop Download */}
+          {tabs?.[0]?.count > 0 && (
+            <div className="flex flex-wrap gap-2 w-full lg:w-auto">
               <TaskStatusTabs
                 tabs={tabs}
                 activeTab={filterKey}
                 setActiveTab={setFilterKey}
               />
               <button
-                className="lg:flex  hidden downloadBtn"
-                onClick={() => downloadReport()}
+                className="hidden lg:flex downloadBtn whitespace-nowrap"
+                onClick={downloadReport}
               >
                 <LuFileSpreadsheet className="text-lg" />
                 Download report
@@ -123,14 +125,17 @@ const ManageTask = () => {
           )}
         </div>
 
+        {/* Empty State */}
         {allTask.length === 0 && (
-          <div className="text-2xl text-red-500 flex items-center justify-center h-full mt-20">
-            No tasks found!!!
+          <div className="text-lg text-red-500 flex items-center justify-center mt-16 text-center px-4">
+            No tasks found!
           </div>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-5">
+
+        {/* Task Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-5">
           {allTask.length > 0 &&
-            allTask?.map((item, index) => (
+            allTask.map((item, index) => (
               <TaskCard
                 key={index}
                 item={item}
