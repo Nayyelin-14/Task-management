@@ -63,12 +63,12 @@ const MyTasks = () => {
   }
   return (
     <DashboardLayout activeMenu="Tasks">
-      <div className="my-2 w-full px-3 md:px-0 mx-auto overflow-x-hidden">
-        <div className="flex flex-col gap-4 md:gap-0 md:flex-row  md:items-center justify-between">
+      <div className="my-5 px-4 md:px-0">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <h2 className="text-xl font-medium">My Tasks</h2>
 
-          {tabs?.[0]?.count > 0 && ( //all task mhr count ka 0 htk po mha
-            <div className="flex items-center gap-4">
+          {tabs?.[0]?.count > 0 && (
+            <div className="flex flex-wrap gap-2 md:gap-4">
               <TaskStatusTabs
                 tabs={tabs}
                 activeTab={filterKey}
@@ -77,14 +77,16 @@ const MyTasks = () => {
             </div>
           )}
         </div>
+
         {!loading && allTasks.length === 0 && (
-          <div className="text-lg text-red-500 flex items-center justify-center mt-16 text-center px-4">
+          <div className="text-xl font-medium flex justify-center items-center h-64 md:h-screen mt-10">
             No task is assigned!!!
           </div>
         )}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-5">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 my-5">
           {allTasks.length > 0 &&
-            allTasks?.map((item, index) => (
+            allTasks.map((item, index) => (
               <TaskCard
                 key={index}
                 item={item}
