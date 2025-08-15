@@ -1,5 +1,5 @@
 import React from "react";
-import image from "./image 3.png";
+import bg from "./Bg.jpg";
 const AuthLayout = ({ children }) => {
   return (
     <div className="flex">
@@ -8,7 +8,7 @@ const AuthLayout = ({ children }) => {
         {children}
       </div>
       <div className="hidden md:flex w-[60vw]">
-        <img src={image} alt="" className=" lg:w-full  object-center" />
+        <img src={bg} alt="" className=" lg:w-full  object-cover" />
       </div>
     </div>
   );

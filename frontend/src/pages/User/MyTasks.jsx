@@ -77,13 +77,12 @@ const MyTasks = () => {
             </div>
           )}
         </div>
-
+        {!loading && allTasks.length === 0 && (
+          <div className="text-xl font-medium flex justify-center items-center h-screen ">
+            No task is assigned!!!
+          </div>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-5">
-          {!loading && allTasks.length === 0 && (
-            <div className="text-xl font-medium flex justify-center items-center h-screen">
-              No task is assigned!!!
-            </div>
-          )}
           {allTasks.length > 0 &&
             allTasks?.map((item, index) => (
               <TaskCard
