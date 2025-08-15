@@ -92,7 +92,7 @@ const ManageTask = () => {
   }
   return (
     <DashboardLayout activeMenu={"Manage Tasks"}>
-      <div className="my-2">
+      <div className="my-2 w-[90%] mx-auto md:w-full">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between">
           <div className="flex items-center justify-between mb-4 lg:mb-0">
             <h2 className="text-xl font-medium">Manage Tasks</h2>
