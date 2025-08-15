@@ -75,13 +75,11 @@ const SignUp = () => {
       toast.success("LogIn successful");
     } catch (err) {
       if (err.response && err.response.data.message) {
-        setError(err.response.data.message);
+        setError("Something went wrong");
       } else {
-        console.log(err);
-
         setError("Something went wrong");
       }
-      toast.error(error);
+      toast.error("Something went wrong");
     }
   };
 
