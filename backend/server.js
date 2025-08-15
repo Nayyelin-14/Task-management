@@ -15,7 +15,7 @@ const app = express();
 //cors
 app.use(
   cors({
-    origin: "https://task-management-brown-three.vercel.app/",
+    origin: "https://task-management-brown-three.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
 
     allowedHeaders: ["Content-Type", "Authorization"],
