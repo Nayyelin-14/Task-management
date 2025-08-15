@@ -11,12 +11,12 @@ import TaskCard from "../../components/Cards/TaskCard";
 const MyTasks = () => {
   const [allTasks, setAllTasks] = useState([]);
   const [tabs, setTabs] = useState([]);
-
   const [filterKey, setFilterKey] = useState("All");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const getAlltasks = async () => {
+
+  const getAllTasks = async () => {
     setLoading(true);
     try {
       const response = await axiosInstance.get(API_PATHS.TASKS.GET_ALL_TASKS, {
@@ -24,10 +24,8 @@ const MyTasks = () => {
       });
 
       if (response.status === 200) {
-        setAllTasks(
-          response?.data?.tasks?.length > 0 ? response?.data?.tasks : []
-        );
-        const statusSummary = response?.data?.statusSummary;
+        setAllTasks(response.data.tasks || []);
+        const statusSummary = response?.data?.statusSummary || {};
         const statusArray = [
           { label: "All", count: statusSummary.allTasks || 0 },
           { label: "Pending", count: statusSummary.pendingTasks || 0 },
@@ -39,57 +37,74 @@ const MyTasks = () => {
         toast.error("Error fetching data");
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    getAlltasks();
+    getAllTasks();
   }, [filterKey]);
 
   const handleClick = (taskId) => {
     navigate(`/user/user-detailtask/${taskId}`);
   };
+
+  const downloadReport = () => {
+    // your download logic
+    toast.success("Download triggered!");
+  };
+
   if (loading) {
     return (
-      <DashboardLayout>
-        <div className="text-xl font-medium flex justify-center items-center h-screen">
-          Loading data....
+      <DashboardLayout activeMenu="Tasks">
+        <div className="flex justify-center items-center h-screen text-xl font-medium">
+          Loading data...
         </div>
       </DashboardLayout>
     );
   }
+
   return (
     <DashboardLayout activeMenu="Tasks">
-      <div className="my-5">
-        <div className="flex flex-col gap-4 md:gap-0 md:flex-row  md:items-center justify-between">
+      <div className="my-5 px-4 md:px-0">
+        {/* Header + Tabs + Download Button */}
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between flex-wrap">
           <h2 className="text-xl font-medium">My Tasks</h2>
 
-          {tabs?.[0]?.count > 0 && ( //all task mhr count ka 0 htk po mha
-            <div className="flex items-center gap-4">
+          {tabs?.[0]?.count > 0 && (
+            <div className="flex flex-wrap items-center gap-2 md:gap-4 mt-2 md:mt-0">
               <TaskStatusTabs
                 tabs={tabs}
                 activeTab={filterKey}
                 setActiveTab={setFilterKey}
               />
+              <button
+                className="downloadBtn flex items-center gap-2 px-4 py-2 rounded-md bg-blue-500/60 hover:bg-blue-500/30 text-white font-medium"
+                onClick={downloadReport}
+              >
+                <LuFileSpreadsheet className="text-lg" />
+                Download report
+              </button>
             </div>
           )}
         </div>
+
+        {/* Empty State */}
         {!loading && allTasks.length === 0 && (
-          <div className="text-xl font-medium flex justify-center items-center h-screen ">
+          <div className="text-xl font-medium flex justify-center items-center h-40 mt-4 text-red-500">
             No task is assigned!!!
           </div>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-5">
+
+        {/* Tasks Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-5">
           {allTasks.length > 0 &&
-            allTasks?.map((item, index) => (
-              <TaskCard
-                key={index}
-                item={item}
-                onClick={() => handleClick(item._id)}
-              />
+            allTasks.map((item, index) => (
+              <div key={index} className="w-full">
+                <TaskCard item={item} onClick={() => handleClick(item._id)} />
+              </div>
             ))}
         </div>
       </div>
