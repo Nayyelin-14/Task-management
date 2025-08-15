@@ -15,7 +15,7 @@ const SignUp = () => {
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [admininviteToken, setAdmininviteToken] = useState("");
+  const [adminToken, setAdminToken] = useState("");
   const [error, setError] = useState(null);
   const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ const SignUp = () => {
         name: fullname,
         email,
         password,
-        admininviteToken,
+        adminToken,
         profileImageUrl,
       });
       const { token, role } = response.data;
@@ -117,8 +117,8 @@ const SignUp = () => {
             />
 
             <FormInputs
-              value={admininviteToken}
-              onChange={(e) => setAdmininviteToken(e.target.value)}
+              value={adminToken}
+              onChange={(e) => setAdminToken(e.target.value)}
               placeholder="6 Digit Code"
               type="text"
               label="Admin invite token"
