@@ -1,8 +1,10 @@
 {
-  "rewrites": [
+  "routes": [
+    { "handle": "filesystem" },
     {
-      "source": "/((?!assets|.*\\.ico|.*\\.png|.*\\.jpg|.*\\.css|.*\\.js).*)",
-      "destination": "/index.html"
-    }
+      "src": "/api/(.*)",
+      "dest": "https://your-render-backend.onrender.com/api/$1"
+    },
+    { "src": "/.*", "dest": "/index.html" }
   ]
 }
